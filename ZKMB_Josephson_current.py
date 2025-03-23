@@ -15,12 +15,12 @@ import matplotlib.pyplot as plt
 plt.rcParams.update({
     "text.usetex": False})
 
-L_x = 300
+L_x = 200
 t = 10
 Delta_0 = 0.2#t/5     
 Delta_1 = 0#t/20
 Lambda = 0.56
-phi_angle = 0
+phi_angle = np.pi/16#np.pi/2
 theta = np.pi/2   #np.pi/2
 B = 2*Delta_0   #2*Delta_0
 B_x = B * np.sin(theta) * np.cos(phi_angle)
@@ -28,8 +28,8 @@ B_y = B * np.sin(theta) * np.sin(phi_angle)
 B_z = B * np.cos(theta)
 mu = -4*t#-2*t
 t_J = t/2    #t/2#t/5
-phi_values = np.linspace(0, 2*np.pi, 100)    #240
-k_y_values = [2*np.pi/100]  #np.array([-2*np.pi/100, 0, 2*np.pi/100]) #np.linspace(0, 2*np.pi, 20)   #np.array([-2*np.pi/100, 0, 2*np.pi/100]) #np.linspace(0, 2*np.pi, 200)  #200
+phi_values = np.sort(np.append(np.linspace(0, 2*np.pi, 50), np.pi))    #240
+k_y_values = np.array([0])   #np.linspace(0, 2*np.pi, 10)   #np.array([-2*np.pi/100, 0, 2*np.pi/100]) #np.linspace(0, 2*np.pi, 200)  #200
 antiparallel = False
 
 params = {"L_x":L_x, "t":t, "t_J":t_J,
@@ -58,12 +58,35 @@ for i, k_y in enumerate(k_y_values):
 
 def get_coefficients(eigenvectors_k_phi):
     N_k, N_phi, N, M = np.shape(eigenvectors_k_phi)
-    A_minus_k_phi_nu_1_R_up = -eigenvectors_k_phi[:, :, 8*(L_x-1)//2+3, :].conj()
+    A_minus_k_phi_nu_1_R_up = -eigenvectors_k_phi[:, :, 8*(L_x-1)//2+3, :].conj() 
     A_minus_k_phi_nu_1_R_down = eigenvectors_k_phi[:, :,  8*(L_x-1)//2+2, :].conj()
-    A_minus_k_phi_nu_2_L_up = -eigenvectors_k_phi[:, :, 8*L_x//2+3, :].conj()
+    A_minus_k_phi_nu_2_L_up = -eigenvectors_k_phi[:, :, 8*L_x//2+3, :].conj() 
     A_minus_k_phi_nu_2_L_down = eigenvectors_k_phi[:, :, 8*L_x//2+2, :].conj()
+    # A_minus_k_phi_nu_1_R_up = -eigenvectors_k_phi[:, :, 8*(L_x-1)//2+3].conj()
+    # A_minus_k_phi_nu_1_R_down = eigenvectors_k_phi[:, :, 8*(L_x-1)//2+2].conj()
+    # A_minus_k_phi_nu_2_L_up = -eigenvectors_k_phi[:, :, 8*L_x//2+3].conj()
+    # A_minus_k_phi_nu_2_L_down = eigenvectors_k_phi[:, :, 8*L_x//2+2].conj()
     return A_minus_k_phi_nu_1_R_up, A_minus_k_phi_nu_1_R_down, A_minus_k_phi_nu_2_L_up, A_minus_k_phi_nu_2_L_down
 
+# def get_coefficients(eigenvectors_k_phi):
+#     N_k, N_phi, N, M = np.shape(eigenvectors_k_phi)
+#     A_minus_k_phi_nu_1_R_up = -eigenvectors_k_phi[:, :, 8*(L_x-1)//2+3, :]
+#     A_minus_k_phi_nu_1_R_down = eigenvectors_k_phi[:, :,  8*(L_x-1)//2+2, :]
+#     A_minus_k_phi_nu_2_L_up = -eigenvectors_k_phi[:, :, 8*L_x//2+3, :] 
+#     A_minus_k_phi_nu_2_L_down = eigenvectors_k_phi[:, :, 8*L_x//2+2, :]
+#     return A_minus_k_phi_nu_1_R_up, A_minus_k_phi_nu_1_R_down, A_minus_k_phi_nu_2_L_up, A_minus_k_phi_nu_2_L_down
+
+#%% Plot coefficients
+A_minus_k_phi_nu_1_R_up = -eigenvectors_k_phi[:, :, 8*(L_x-1)//2+3, :].conj()
+A_minus_k_phi_nu_1_R_down = eigenvectors_k_phi[:, :,  8*(L_x-1)//2+2, :].conj()
+A_minus_k_phi_nu_2_L_up = -eigenvectors_k_phi[:, :, 8*L_x//2+3, :].conj()
+A_minus_k_phi_nu_2_L_down = eigenvectors_k_phi[:, :, 8*L_x//2+2, :].conj()
+sumand = np.conj(A_minus_k_phi_nu_1_R_up) * A_minus_k_phi_nu_2_L_up #+ np.conj(A_minus_k_phi_nu_1_R_down) * A_minus_k_phi_nu_2_L_down
+positive_energy_sumand = np.where(eigenvalues_k_phi>0, sumand, np.zeros_like(sumand))
+
+fig, ax = plt.subplots()
+# ax.plot(phi_values, sumand[0, :, 8*(L_x)//2])
+ax.plot(phi_values, positive_energy_sumand[0, :, 4*L_x+1])
 
 #%%
 
