@@ -58,14 +58,14 @@ for i, k_y in enumerate(k_y_values):
 
 def get_coefficients(eigenvectors_k_phi):
     N_k, N_phi, N, M = np.shape(eigenvectors_k_phi)
-    A_minus_k_phi_nu_1_R_up = -eigenvectors_k_phi[:, :, 8*(L_x-1)//2+3, :].conj() 
-    A_minus_k_phi_nu_1_R_down = eigenvectors_k_phi[:, :,  8*(L_x-1)//2+2, :].conj()
-    A_minus_k_phi_nu_2_L_up = -eigenvectors_k_phi[:, :, 8*L_x//2+3, :].conj() 
-    A_minus_k_phi_nu_2_L_down = eigenvectors_k_phi[:, :, 8*L_x//2+2, :].conj()
-    # A_minus_k_phi_nu_1_R_up = -eigenvectors_k_phi[:, :, 8*(L_x-1)//2+3].conj()
-    # A_minus_k_phi_nu_1_R_down = eigenvectors_k_phi[:, :, 8*(L_x-1)//2+2].conj()
-    # A_minus_k_phi_nu_2_L_up = -eigenvectors_k_phi[:, :, 8*L_x//2+3].conj()
-    # A_minus_k_phi_nu_2_L_down = eigenvectors_k_phi[:, :, 8*L_x//2+2].conj()
+    # A_minus_k_phi_nu_1_R_up = -eigenvectors_k_phi[:, :, 8*(L_x-1)//2+3, :].conj() 
+    # A_minus_k_phi_nu_1_R_down = eigenvectors_k_phi[:, :,  8*(L_x-1)//2+2, :].conj()
+    # A_minus_k_phi_nu_2_L_up = -eigenvectors_k_phi[:, :, 8*L_x//2+3, :].conj() 
+    # A_minus_k_phi_nu_2_L_down = eigenvectors_k_phi[:, :, 8*L_x//2+2, :].conj()
+    A_minus_k_phi_nu_1_R_up = -eigenvectors_k_phi[:, :, 8*(L_x-1)//2+3].conj()
+    A_minus_k_phi_nu_1_R_down = eigenvectors_k_phi[:, :, 8*(L_x-1)//2+2].conj()
+    A_minus_k_phi_nu_2_L_up = -eigenvectors_k_phi[:, :, 8*L_x//2+3].conj()
+    A_minus_k_phi_nu_2_L_down = eigenvectors_k_phi[:, :, 8*L_x//2+2].conj()
     return A_minus_k_phi_nu_1_R_up, A_minus_k_phi_nu_1_R_down, A_minus_k_phi_nu_2_L_up, A_minus_k_phi_nu_2_L_down
 
 # def get_coefficients(eigenvectors_k_phi):
